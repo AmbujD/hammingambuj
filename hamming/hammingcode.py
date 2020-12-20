@@ -5,10 +5,8 @@ def cal_parity_bit(h, flag):
     for parity in range(0, (len(h))):
         ph = (2 ** ch)
         if ph == (parity + 1):
-
             startindex = ph - 1
-            i = startindex
-            toxor = []
+            i, toxor = startindex, []
 
             while i < len(h):
                 block = h[i:i + ph]
@@ -27,8 +25,7 @@ def cal_parity_bit(h, flag):
 
 # GENERATE HAMMING CODE
 def generate_hamming_code(d):
-    data = list(d)
-    data.reverse()
+    data = list(d)[::-1]
     c, j, r, h = 0, 0, 0, []
 
     while (len(d) + r + 1) > (pow(2, r)):
@@ -40,22 +37,18 @@ def generate_hamming_code(d):
         if p == (i + 1):
             h.append(0)
             c = c + 1
-
         else:
             h.append(int(data[j]))
             j = j + 1
 
-    h = cal_parity_bit(h, False)
-    h.reverse()
+    h = cal_parity_bit(h, False)[::-1]
     return int(''.join(map(str, h)))
 
 
 # DETECT ERROR IN RECEIVED HAMMING CODE
 def detect_error_in_hamming_code(d):
-    data = list(d)
-    data.reverse()
+    data = list(d)[::-1]
     c, error, h, parity_list, h_copy = 0, 0, [], [], []
-
     for k in range(0, len(data)):
         p = (2 ** c)
         h.append(int(data[k]))
@@ -63,28 +56,16 @@ def detect_error_in_hamming_code(d):
         if p == (k + 1):
             c = c + 1
 
-    parity_list = cal_parity_bit(h, True)
-    parity_list.reverse()
+    parity_list = cal_parity_bit(h, True)[::-1]
     error = sum(int(parity_list) * (2 ** i) for i, parity_list in enumerate(
         parity_list[::-1]))
-
     if error == 0:
-        result = 'There is no error in the hamming code received'
-
+        return 'There is no error in the hamming code received'
     elif error >= len(h_copy):
-        result = 'Error cannot be detected'
-
-    else:
-        if h_copy[error - 1] == '0':
-            h_copy[error - 1] = '1'
-
-        elif h_copy[error - 1] == '1':
-            h_copy[error - 1] = '0'
-
-        h_copy.reverse()
-        correct_hamming_code = int(''.join(map(str, h_copy)))
-        result = 'Error is in,' + str(error) + \
-                 ', bit\nAfter correction hamming code is:-\n'\
-                 + str(correct_hamming_code)
-
-    return result
+        return 'Error cannot be detected'
+    h_copy[error - 1] = '1' if h_copy[error - 1] == '0' else '0'
+    h_copy.reverse()
+    correct_hamming_code = int(''.join(map(str, h_copy)))
+    return 'Error is in,' + str(error) + ', bit\nAfter correction hamming ' \
+                                         'code is:-\n' + str(
+                                          correct_hamming_code)

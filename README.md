@@ -1,7 +1,7 @@
-﻿# HAMMINGAMBUJ
+﻿# HAMMING
 >
 
-#### The HAMMINGAMBUJ Module is a python library which lets you generate hamming code and detect error in it.
+#### The HAMMING Module is a python library which lets you generate hamming code and detect error in it.
 
 ## Understanding the Concept
 
@@ -9,18 +9,18 @@
 
 ## Installation
 
-pip install hammingambuj
+pip install hamming
 
 ## Examples
 ```
-from hammingambuj import hammingcode
+from hamming import hammingcode
 
-hammingcode.generate_hamming_code("01010101")
-hammingcode.detect_error_in_hamming_code("01010101")
+hamming_code = hammingcode.generate_hamming_code("01010101")
+error = hammingcode.detect_error_in_hamming_code("01010101")
 ```
 
 ## Requirements
 
-The HAMMINGAMBUJ offically supports Python 3.9.
+The HAMMING offically supports Python 3.9.
 
 [Hamming code]: <https://en.wikipedia.org/wiki/Hamming_code>
